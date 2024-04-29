@@ -38,22 +38,22 @@ object VAL_CHECK{
 
   def checkRegIdx(regIdx: Int): Unit = {
     assert(regIdx >= 0, "register index must be ge 0")
-    assert(regIdx < MAX_AMT_IDX, s"register index must be Lt ${MAX_AMT_IDX}")
+    assert(regIdx < MAX_AMT_IDX, s"register index must be Lt $MAX_AMT_IDX")
   }
 
   def checkF3(f3: Int): Unit = {
     assert(f3 >= 0, "f3 index must be ge 0")
-    assert(f3 < MAX_AMT_F3, s"f3 index must be lt ${MAX_AMT_F3}")
+    assert(f3 < MAX_AMT_F3, s"f3 index must be lt $MAX_AMT_F3")
   }
 
   def checkF8(f8: Int): Unit = {
     assert(f8 >= 0, "f8 index must be ge 0")
-    assert(f8 < MAX_AMT_F7, s"f3 index must be lt ${MAX_AMT_F7}")
+    assert(f8 < MAX_AMT_F7, s"f3 index must be lt $MAX_AMT_F7")
   }
 
   def checkImm(sidx: SIDX, imm: Int): Unit = {
 
-    val minRange = (1 << (sidx._1)) - 1
+    val minRange = (1 << sidx._1) - 1
     val maxRange = minRange + (1 << (sidx._2 - sidx._1 + 1 - 1))  /////// get bit size and reduce 1 bit for sign
 
     if (imm >= 0) {
