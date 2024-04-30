@@ -38,17 +38,17 @@ object VAL_CHECK{
 
   def checkRegIdx(regIdx: Int): Unit = {
     assert(regIdx >= 0, "register index must be ge 0")
-    assert(regIdx < MAX_AMT_IDX, s"register index must be Lt $MAX_AMT_IDX")
+    assert(regIdx < MAX_AMT_IDX, "register index must be Lt $MAX_AMT_IDX")
   }
 
   def checkF3(f3: Int): Unit = {
     assert(f3 >= 0, "f3 index must be ge 0")
-    assert(f3 < MAX_AMT_F3, s"f3 index must be lt $MAX_AMT_F3")
+    assert(f3 < MAX_AMT_F3, "f3 index must be lt $MAX_AMT_F3")
   }
 
   def checkF8(f8: Int): Unit = {
     assert(f8 >= 0, "f8 index must be ge 0")
-    assert(f8 < MAX_AMT_F7, s"f3 index must be lt $MAX_AMT_F7")
+    assert(f8 < MAX_AMT_F7, "f3 index must be lt $MAX_AMT_F7")
   }
 
   def checkImm(sidx: SIDX, imm: Int): Unit = {
@@ -67,17 +67,6 @@ object VAL_CHECK{
 
 }
 
-trait IntrBase{
-
-  var result: Int = 0
-
-  def dump: Int = {
-    return result
-  }
-
-}
-
-
 class Slice(var sidx : SIDX,
             var value: Int,
 
@@ -89,15 +78,22 @@ class Slice(var sidx : SIDX,
   val neededMask = (1 << size) - 1;
   ///// build result
   var result: Int = 0;
-      result = value & neededMask;
-      result = result << sidx._1;
+  result = value & neededMask;
+  result = result << sidx._1;
 
   def getSliceVal: Int = {return result;}
 
 }
 
+trait IntrBase{
 
+  var result: Int = 0
 
+  def dump: Int = {
+    return result
+  }
+
+}
 
 class R_INSTR(var opcode: Int, var rd_idx: Int,
               var r1_idx: Int, var r2_idx: Int,
