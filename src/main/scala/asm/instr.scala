@@ -1,11 +1,13 @@
+package asm
+
 type SIDX =  (Int, Int)
 
 object INSTR_SLICE_META{
-  val OP: SIDX = (0,7)
-  val RD: SIDX = (7,12)
-  val F3: SIDX = (12,15)
-  val R1: SIDX = (15,20)
-  val R2: SIDX = (20,25)
+  val OP: SIDX = ( 0,  7)
+  val RD: SIDX = ( 7, 12)
+  val F3: SIDX = (12, 15)
+  val R1: SIDX = (15, 20)
+  val R2: SIDX = (20, 25)
   val F7: SIDX = (25, 32)
 
   val IMM_I_0_11 : SIDX = (20, 31)
@@ -13,8 +15,8 @@ object INSTR_SLICE_META{
   val IMM_S_0_4  : SIDX = ( 7, 12)
   val IMM_S_5_11 : SIDX = (25, 32)
 
-  val IMM_B_1_4  : SIDX = (8, 12)
-  val IMM_B_11   : SIDX = (7, 8)
+  val IMM_B_1_4  : SIDX = (8,  12)
+  val IMM_B_11   : SIDX = (7,   8)
   val IMM_B_5_10 : SIDX = (25, 31)
   val IMM_B_12   : SIDX = (31, 32)
 
@@ -53,28 +55,24 @@ object VAL_CHECK{
 
   def checkImm(sidx: SIDX, imm: Int): Unit = {
 
-    val minRange = (1 << sidx._1) - 1
-    val maxRange = minRange + (1 << (sidx._2 - sidx._1 + 1 - 1))  /////// get bit size and reduce 1 bit for sign
+    ///// sign integer have been used here
+    val maxRange = 1 << (sidx._1-1)
 
-    if (imm >= 0) {
-      assert(imm < maxRange, "imm exceed range")
-      assert(imm >= minRange, "imm exceed range")
-    }else{
-      assert(imm <= (-minRange), "imm neg exceed range"  )
-      assert(imm >= (-maxRange), "imm neg exceed range" )
-    }
+    /*** check lower bit integrity*/
+    assert((imm % (1 << sidx._1)) == 0, "imm lower bit is pollute instruction can't be use like that")
+    assert( (imm < maxRange) && (imm >= -maxRange), "imm is exceed range")
+
   }
 
 }
 
 class Slice(var sidx : SIDX,
-            var value: Int,
-
+            var value: Int
            ){
 
   assert(sidx._1 < sidx._2, "idx fault")
   ///// build necessary data before build result
-  val size = sidx._2 - sidx._1;
+  val size = sidx._2 - sidx._1
   val neededMask = (1 << size) - 1;
   ///// build result
   var result: Int = 0;
@@ -133,7 +131,6 @@ class I_INSTR(var opcode: Int, var rd_idx: Int,
   result |= Slice(INSTR_SLICE_META.F3, funct3).getSliceVal;
   /** imm*/
   result |= Slice(INSTR_SLICE_META.IMM_I_0_11, imm   ).getSliceVal;
-
 
 }
 
