@@ -36,6 +36,8 @@ object Compiler{
     for (line <- fileSource.getLines()){
       /** split the token*/
       val tokens = line.split("\\s+")
+      convertListToLowerCase(tokens)
+      //println(tokens)
       /** encode the token*/
       if (tokens.nonEmpty && tokens(0).nonEmpty && (tokens(0)(0) != ';') ){ ///// we skip empty line
         val newInstr  = EncoderBase.encode(tokens)

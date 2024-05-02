@@ -10,7 +10,7 @@ object INSTR_SLICE_META{
   val R2: SIDX = (20, 25)
   val F7: SIDX = (25, 32)
 
-  val IMM_I_0_11 : SIDX = (20, 31)
+  val IMM_I_0_11 : SIDX = (20, 32)
 
   val IMM_S_0_4  : SIDX = ( 7, 12)
   val IMM_S_5_11 : SIDX = (25, 32)
@@ -34,7 +34,7 @@ object INSTR_SLICE_META{
 
 object VAL_CHECK{
 
-  val MAX_AMT_IDX = 31
+  val MAX_AMT_IDX = 32
   val MAX_AMT_F3  = 8
   val MAX_AMT_F7  = 128
 
@@ -56,10 +56,12 @@ object VAL_CHECK{
   def checkImm(sidx: SIDX, imm: Int): Unit = {
 
     ///// sign integer have been used here
-    val maxRange = 1 << (sidx._1-1)
+    val maxRange = 1L << (sidx._2-1)
 
     /*** check lower bit integrity*/
     assert((imm % (1 << sidx._1)) == 0, "imm lower bit is pollute instruction can't be use like that")
+    ////println(f"imm is $imm and maxrage is $maxRange")
+    
     assert( (imm < maxRange) && (imm >= -maxRange), "imm is exceed range")
 
   }
@@ -122,7 +124,7 @@ class I_INSTR(var opcode: Int, var rd_idx: Int,
   /** integrity check*/
   VAL_CHECK.checkRegIdx(rd_idx)
   VAL_CHECK.checkRegIdx(r1_idx)
-  VAL_CHECK.checkImm((0, 11), imm)
+  VAL_CHECK.checkImm((0, 12), imm)
   VAL_CHECK.checkF3(funct3)
   /** build value */
   result |= opcode;
@@ -141,7 +143,7 @@ class S_INSTR(var opcode: Int,
   /** integrity check*/
   VAL_CHECK.checkRegIdx(r1_idx)
   VAL_CHECK.checkRegIdx(r2_idx)
-  VAL_CHECK.checkImm((0, 11), imm)
+  VAL_CHECK.checkImm((0, 12), imm)
   VAL_CHECK.checkF3(funct3)
   /** build value */
   result |= opcode;
@@ -150,7 +152,9 @@ class S_INSTR(var opcode: Int,
   result |= Slice(INSTR_SLICE_META.F3, funct3).getSliceVal;
   /*** imm encoder*/
   result |= Slice(INSTR_SLICE_META.IMM_S_0_4, imm   ).getSliceVal;
+  println(imm)
   imm = imm >> INSTR_SLICE_META.getSize(INSTR_SLICE_META.IMM_S_0_4);
+  result |= Slice(INSTR_SLICE_META.IMM_S_5_11, imm).getSliceVal
 
 }
 
@@ -194,7 +198,8 @@ class U_INSTR(var opcode: Int, var rd_idx: Int,
   extends IntrBase {
   /** integrity check */
   VAL_CHECK.checkRegIdx(rd_idx)
-  VAL_CHECK.checkImm((12, 31), imm)
+  //println(imm)
+  VAL_CHECK.checkImm((12, 32), imm)
 
   /** build value */
   result |= opcode;
@@ -212,7 +217,7 @@ class J_INSTR(var opcode: Int, var rd_idx: Int,
   extends IntrBase {
   /** integrity check */
   VAL_CHECK.checkRegIdx(rd_idx)
-  VAL_CHECK.checkImm((1, 20), imm)
+  VAL_CHECK.checkImm((1, 21), imm)
 
   /** build value */
   result |= opcode;

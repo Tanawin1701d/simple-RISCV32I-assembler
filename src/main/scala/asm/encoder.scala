@@ -88,9 +88,10 @@ object EncoderBase{
 
     assert(tokens.nonEmpty, "instruction should not empty")
     val mnemonic = tokens(0)
+    println(mnemonic)
 
     if (Mnemonic.R_ALU_mnemonic.contains(mnemonic)){
-      assert(tokens.length == 4, "invalid r alu args")
+      assert(tokens.length >= 4, "invalid r alu args")
       val rd = cvtRegNameToIdx(tokens(1))
       val r1 = cvtRegNameToIdx(tokens(2))
       val r2 = cvtRegNameToIdx(tokens(3))
@@ -102,7 +103,7 @@ object EncoderBase{
     }
 
     if (Mnemonic.I_POOL_mnemonic.contains(mnemonic)){
-      assert(tokens.length == 4, "invalidd imm arge")
+      assert(tokens.length >= 4, "invalidd imm arge")
       val rd  = cvtRegNameToIdx(tokens(1))
       val r1  = cvtRegNameToIdx(tokens(2))
       var imm = cvtImmToInt    (tokens(3))
@@ -124,7 +125,7 @@ object EncoderBase{
     }
 
     if (Mnemonic.U_LDPC_mnemonic.contains(mnemonic)){
-      assert(tokens.length == 3, "invalid u instr")
+      assert(tokens.length >= 3, "invalid u instr")
       val rd = cvtRegNameToIdx(tokens(1))
       val imm = cvtImmToInt   (tokens(2))
 
@@ -133,7 +134,7 @@ object EncoderBase{
 
 
     if (Mnemonic.J_JUMP_mnemonic.contains(mnemonic)){
-      assert(tokens.length == 3, "invalid j instr (jal)")
+      assert(tokens.length >= 3, "invalid j instr (jal)")
       val rd  = cvtRegNameToIdx(tokens(1))
       val imm = cvtImmToInt    (tokens(2))
       return J_INSTR(Mnemonic.J_JUMP_mnemonic(mnemonic), rd, imm)
@@ -141,10 +142,10 @@ object EncoderBase{
     }
 
     if (Mnemonic.B_BRANCH_mnemonic.contains(mnemonic)){
-      assert(tokens.length == 4, "invalid b instr")
-      val imm = cvtImmToInt    (tokens(0))
-      val r1  = cvtRegNameToIdx(tokens(1))
-      val r2  = cvtRegNameToIdx(tokens(2))
+      assert(tokens.length >= 4, "invalid b instr")
+      val imm = cvtImmToInt    (tokens(1))
+      val r1  = cvtRegNameToIdx(tokens(2))
+      val r2  = cvtRegNameToIdx(tokens(3))
       return B_INSTR(Mnemonic.B_BRANCH_mnemonic_opcode,
                      r1, r2, imm,
                      Mnemonic.B_BRANCH_mnemonic(mnemonic)
@@ -152,10 +153,10 @@ object EncoderBase{
     }
 
     if (Mnemonic.S_STORE_mnemonic.contains(mnemonic)){
-      assert(tokens.length == 4, "invalid s isntr")
-      val rbase = cvtRegNameToIdx(tokens(0))
-      val imm   = cvtImmToInt    (tokens(1))
-      val rsrc  = cvtRegNameToIdx(tokens(2))
+      assert(tokens.length >= 4, "invalid s isntr")
+      val rbase = cvtRegNameToIdx(tokens(1))
+      val imm   = cvtImmToInt    (tokens(2))
+      val rsrc  = cvtRegNameToIdx(tokens(3))
       
       return S_INSTR(Mnemonic.S_STORE_mnemonic_opcode,
         rbase, rsrc, imm,
