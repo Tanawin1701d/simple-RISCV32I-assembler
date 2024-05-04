@@ -27,7 +27,7 @@ object Compiler{
 
     val fileSource          = Source.fromFile(srcFilePath)
     val desFileOutputStream = new FileOutputStream(desFilePath)
-    val cs = CodeSection(0)
+    val cs = CodeSection(0, true)
 
     /**
      * read data
