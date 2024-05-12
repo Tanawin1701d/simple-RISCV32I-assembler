@@ -40,7 +40,7 @@ sh r10  0 r4  ; mem[r10 + 0] <- r4    16 bits store
 1. Clone the repository from GitHub: `git clone https://github.com/Tanawin1701d/simple-RISCV32I-assembler`
 2. modify ```example/sort/compileGroup``` file as follow :
    - first line is abs path to ```sort.asm``` which was provided in the same directory with ```compileGroup```
-   - second line is abs path to ```your output with file name```
+   - second line is abs path to ```<your output with file name>```
    - you may compile more than 1 file at a time by append your src and des file to this file
 
 6. compile program: ```sbt compile```
