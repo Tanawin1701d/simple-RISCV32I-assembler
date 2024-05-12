@@ -7,7 +7,7 @@ implemented in Scala. In addition, This project was used by Kathryn
 
 ## Specification
 - Version : ```RISC-V 32I```
-- Exclude : ```Fence and Csr instruction```
+- Exclude : ```Fence, syscal, and Csr instruction```
 
 ## code example
 
