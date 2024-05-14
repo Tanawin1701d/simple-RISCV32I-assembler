@@ -23,6 +23,6 @@ def main(compileGroupPath: String): Unit = {
     println(s"compile file ${srcDesPath(i)}")
     Compiler.compile(srcFilePath = srcDesPath(i), desFilePath = srcDesPath(i + 1))
     i += 2
-  }
+  } 
 
 }
