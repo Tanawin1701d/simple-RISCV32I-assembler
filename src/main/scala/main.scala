@@ -5,7 +5,7 @@ import scala.io.Source
 import scala.util.{CommandLineParser, Try}
 
 @main
-def main(compileGroupPath: String): Unit = {
+def main(compileGroupPath: String): Unit = { 
 
   val fileSource = Source.fromFile(compileGroupPath)
 
